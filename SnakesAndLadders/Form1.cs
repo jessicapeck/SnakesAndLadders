@@ -134,7 +134,11 @@ namespace SnakesAndLadders
                 player2_num_label.Text = num.ToString();
             }
 
-            update_game_piece_positions(player_num, num);
+            for (int i = 0; i < num; i++)
+            {
+                update_game_piece_positions(player_num, 1);
+                System.Threading.Thread.Sleep(500);
+            }
 
         }
 
