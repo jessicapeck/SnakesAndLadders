@@ -16,8 +16,15 @@ namespace SnakesAndLadders
         int num_rows = 10;
         int num_cols = 10;
 
+        int pixel_width;
+        int pixel_height;
+
         private SolidBrush sb_black = new SolidBrush(Color.Black);
         private SolidBrush sb_white = new SolidBrush(Color.White);
+        private SolidBrush sb_blue = new SolidBrush(Color.Blue);
+        private SolidBrush sb_red = new SolidBrush(Color.Red);
+
+        
 
         public Form()
         {
@@ -26,10 +33,11 @@ namespace SnakesAndLadders
 
         private void panel_Paint(object sender, PaintEventArgs e)
         {
-            int pixel_width = panel.ClientSize.Width / num_cols;
-            int pixel_height = panel.ClientSize.Height / num_rows;
+            pixel_width = panel.ClientSize.Width / num_cols;
+            pixel_height = panel.ClientSize.Height / num_rows;
 
             Graphics targetGraphics = e.Graphics;
+
 
             int square_num = 101;
 
@@ -73,6 +81,36 @@ namespace SnakesAndLadders
                     }
                 }
             }
+
+            
+        }
+
+        
+
+        private void player1_roll_button_Click(object sender, EventArgs e)
+        {
+            generate_random_number(1);
+        }
+
+        private void player2_roll_button_Click(object sender, EventArgs e)
+        {
+            generate_random_number(2);
+        }
+
+        private void generate_random_number(int player_num)
+        {
+            Random random = new Random();
+            int num = random.Next(1, 7);
+
+            if (player_num == 1)
+            {
+                player1_num_label.Text = num.ToString();
+            }
+            else if (player_num == 2)
+            {
+                player2_num_label.Text = num.ToString();
+            }
+
         }
     }
 }
