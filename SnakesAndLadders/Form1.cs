@@ -29,6 +29,15 @@ namespace SnakesAndLadders
         public Form()
         {
             InitializeComponent();
+            UI_setup();
+        }
+
+        private void UI_setup()
+        {
+            player1_roll_button.Enabled = true;
+
+            player2_roll_button.Enabled = false;
+
         }
 
         private void panel_Paint(object sender, PaintEventArgs e)
@@ -89,11 +98,20 @@ namespace SnakesAndLadders
 
         private void player1_roll_button_Click(object sender, EventArgs e)
         {
+            player1_roll_button.Enabled = false;
+
+            player2_roll_button.Enabled = true;
+
             generate_random_number(1);
         }
 
         private void player2_roll_button_Click(object sender, EventArgs e)
         {
+            player2_roll_button.Enabled = false;
+
+
+            player1_roll_button.Enabled = true;
+
             generate_random_number(2);
         }
 
