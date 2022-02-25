@@ -19,6 +19,15 @@ namespace SnakesAndLadders
         int pixel_width;
         int pixel_height;
 
+        int player1_game_piece_row = 9;
+        int player1_game_piece_col = 9;
+        int player1_position_num = 1;
+
+        int player2_game_piece_row = 9;
+        int player2_game_piece_col = 9;
+        int player2_position_num = 1;
+
+
         private SolidBrush sb_black = new SolidBrush(Color.Black);
         private SolidBrush sb_white = new SolidBrush(Color.White);
         private SolidBrush sb_blue = new SolidBrush(Color.Blue);
@@ -42,8 +51,8 @@ namespace SnakesAndLadders
 
         private void panel_Paint(object sender, PaintEventArgs e)
         {
-            pixel_width = panel.ClientSize.Width / num_cols;
-            pixel_height = panel.ClientSize.Height / num_rows;
+            pixel_width = game_board_panel.ClientSize.Width / num_cols;
+            pixel_height = game_board_panel.ClientSize.Height / num_rows;
 
             Graphics targetGraphics = e.Graphics;
 
@@ -89,12 +98,8 @@ namespace SnakesAndLadders
                         }
                     }
                 }
-            }
-
-            
-        }
-
-        
+            }            
+        }        
 
         private void player1_roll_button_Click(object sender, EventArgs e)
         {
@@ -128,6 +133,88 @@ namespace SnakesAndLadders
             {
                 player2_num_label.Text = num.ToString();
             }
+
+            update_game_piece_positions(player_num, num);
+
+        }
+
+        private int get_game_piece_row(int position_num)
+        {
+            int game_piece_row;
+
+            if (position_num % 10 == 0)
+            {
+                game_piece_row = 9 - ((position_num / 10) - 1);
+            }
+            else
+            {
+                game_piece_row = 9 - (position_num / 10);
+            }
+            
+            return game_piece_row;
+        }
+
+        private int get_game_piece_col(int game_piece_row, int position_num)
+        {
+            int col_zero_num;
+            int game_piece_col;
+            
+            if (game_piece_row % 2 == 1)
+            {
+                col_zero_num = (10 - game_piece_row) * 10;
+                game_piece_col = col_zero_num - position_num;
+                return game_piece_col;
+
+            }
+            else
+            {
+                col_zero_num = ((10 - (game_piece_row + 1)) * 10) + 1;
+                game_piece_col = position_num - col_zero_num;
+                return game_piece_col;
+            }
+        }
+
+        private void update_game_piece_positions(int player_num, int dice_roll_num)
+        {
+            if (player_num == 1)
+            {
+                int new_player1_position_num = player1_position_num + dice_roll_num;
+                move_description_label.ForeColor = Color.Blue;
+                move_description_label.Text = ($"Player {player_num} has moved from position {player1_position_num} to {new_player1_position_num}.");
+                player1_position_num = new_player1_position_num;
+
+                player1_game_piece_row = get_game_piece_row(player1_position_num);
+                player1_game_piece_col = get_game_piece_col(player1_game_piece_row, player1_position_num);
+
+            }
+            else if (player_num == 2)
+            {
+                int new_player2_position_num = player2_position_num + dice_roll_num;
+                move_description_label.ForeColor = Color.Red;
+                move_description_label.Text = ($"Player {player_num} has moved from position {player2_position_num} to {new_player2_position_num}.");
+                player2_position_num = new_player2_position_num;
+
+                player2_game_piece_row = get_game_piece_row(player2_position_num);
+                player2_game_piece_col = get_game_piece_col(player2_game_piece_row, player2_position_num);
+                
+            }
+
+            // TODO check if the player has landed on a snake or ladder and change position accordingly
+
+            game_pieces_panel.Refresh();
+
+        }
+
+        private void game_pieces_panel_Paint(object sender, PaintEventArgs e)
+        {
+            Graphics targetGraphics = e.Graphics;
+
+            
+            targetGraphics.FillEllipse(sb_blue, player1_game_piece_col * pixel_width, (player1_game_piece_row*pixel_height) + (pixel_height/2), pixel_width/3, pixel_height/3);
+            targetGraphics.FillEllipse(sb_red, (player2_game_piece_col * pixel_width) + (pixel_width/2), (player2_game_piece_row * pixel_height) + (pixel_height/2), pixel_width/3, pixel_height/3);
+
+
+
 
         }
     }
