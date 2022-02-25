@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace SnakesAndLadders
 {
-    public partial class Form : System.Windows.Forms.Form
+    public partial class GameForm : System.Windows.Forms.Form
     {
 
         int num_rows = 10;
@@ -35,7 +35,7 @@ namespace SnakesAndLadders
 
         
 
-        public Form()
+        public GameForm()
         {
             InitializeComponent();
             UI_setup();
@@ -114,7 +114,6 @@ namespace SnakesAndLadders
         {
             player2_roll_button.Enabled = false;
 
-
             player1_roll_button.Enabled = true;
 
             generate_random_number(2);
@@ -122,24 +121,43 @@ namespace SnakesAndLadders
 
         private void generate_random_number(int player_num)
         {
+            int initial_position;
+            int end_position;
+            
             Random random = new Random();
             int num = random.Next(1, 7);
 
             if (player_num == 1)
             {
                 player1_num_label.Text = num.ToString();
+                initial_position = player1_position_num; 
+                end_position = initial_position + num;
+
+                move_description_label.ForeColor = Color.Blue;
+                move_description_label.Text = ($"Player {player_num} has moved from {initial_position} to {end_position}.");
+
+
             }
             else if (player_num == 2)
             {
                 player2_num_label.Text = num.ToString();
+                initial_position = player2_position_num;
+                end_position = initial_position + num;
+
+                move_description_label.ForeColor = Color.Red;
+                move_description_label.Text = ($"Player {player_num} has moved from {initial_position} to {end_position}.");
+
+
             }
+
+
+            this.Refresh();
 
             for (int i = 0; i < num; i++)
             {
                 update_game_piece_positions(player_num, 1);
                 System.Threading.Thread.Sleep(500);
             }
-
         }
 
         private int get_game_piece_row(int position_num)
@@ -183,8 +201,6 @@ namespace SnakesAndLadders
             if (player_num == 1)
             {
                 int new_player1_position_num = player1_position_num + dice_roll_num;
-                move_description_label.ForeColor = Color.Blue;
-                move_description_label.Text = ($"Player {player_num} has moved from position {player1_position_num} to {new_player1_position_num}.");
                 player1_position_num = new_player1_position_num;
 
                 player1_game_piece_row = get_game_piece_row(player1_position_num);
@@ -194,8 +210,6 @@ namespace SnakesAndLadders
             else if (player_num == 2)
             {
                 int new_player2_position_num = player2_position_num + dice_roll_num;
-                move_description_label.ForeColor = Color.Red;
-                move_description_label.Text = ($"Player {player_num} has moved from position {player2_position_num} to {new_player2_position_num}.");
                 player2_position_num = new_player2_position_num;
 
                 player2_game_piece_row = get_game_piece_row(player2_position_num);
