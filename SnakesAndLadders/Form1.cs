@@ -14,6 +14,7 @@ namespace SnakesAndLadders
     {
 
         // declare the number of rows and columns in the panel
+        // if changing num_rows or num_cols, must make sure that they are even
         int num_rows = 10;
         int num_cols = 10;
 
@@ -22,13 +23,18 @@ namespace SnakesAndLadders
         int pixel_height;
 
         //declare starting positions for each player's game piece
-        int player1_game_piece_row = 9;
-        int player1_game_piece_col = 9;
-        int player1_position_num = 1;
+        int player1_game_piece_row;
+        int player1_game_piece_col;
+        int player1_position_num;
 
-        int player2_game_piece_row = 9;
-        int player2_game_piece_col = 9;
-        int player2_position_num = 1;
+        int player2_game_piece_row;
+        int player2_game_piece_col;
+        int player2_position_num;
+
+        List<int> snake_heads = new List<int>() { };
+        List<int> snake_tails = new List<int>() { };
+
+
 
 
         // declare different coloured brushes
@@ -37,14 +43,25 @@ namespace SnakesAndLadders
         private SolidBrush sb_blue = new SolidBrush(Color.Blue);
         private SolidBrush sb_red = new SolidBrush(Color.Red);
 
+        private Pen sb_green = new Pen(Color.Green, 10);
         
 
         public GameForm()
         {
             InitializeComponent();
-            
+
+            //declare starting positions for each player's game piece
+            player1_game_piece_row = num_rows - 1;
+            player1_game_piece_col = num_cols - 1;
+            player1_position_num = 1;
+
+            player2_game_piece_row = num_rows - 1;
+            player2_game_piece_col = num_cols - 1;
+            player2_position_num = 1;
+
             // setup the initial state of the UI
             UI_setup();
+            create_snakes_and_ladders();
         }
 
         private void UI_setup()
@@ -52,6 +69,67 @@ namespace SnakesAndLadders
             // player 1 goes first --> player 1's button is enabled and player 2's button is disabled
             player1_roll_button.Enabled = true;
             player2_roll_button.Enabled = false;
+
+        }
+
+        private void create_snakes_and_ladders()
+        {
+            Random random = new Random();
+
+            int snake1_head = random.Next(num_rows*2, (num_rows * num_cols) + 1);
+            snake_heads.Add(snake1_head);
+
+            int snake2_head = random.Next(num_rows*2, (num_rows * num_cols) + 1);
+            while (snake_heads.Contains(snake2_head))               
+            {
+                snake2_head = random.Next(num_rows * 2, (num_rows * num_cols) + 1);
+
+            }
+            snake_heads.Add(snake2_head);
+
+            int snake3_head = random.Next(num_rows*2, (num_rows * num_cols) + 1);
+            while (snake_heads.Contains(snake3_head))
+            {
+                snake3_head = random.Next(num_rows * 2, (num_rows * num_cols) + 1);
+
+            }
+            snake_heads.Add(snake3_head);
+
+
+            int snake1_tail = random.Next(0, (num_rows * num_cols) - num_cols);
+            while (snake1_tail > snake1_head)
+            {
+                snake1_tail = random.Next(0, (num_rows * num_cols) - num_cols);
+            }
+            snake_tails.Add(snake1_tail);
+
+
+            int snake2_tail = random.Next(0, (num_rows * num_cols) - num_cols);
+            while (snake2_tail > snake2_head)
+            {
+                snake2_tail = random.Next(0, (num_rows * num_cols) - num_cols);
+            }
+            snake_tails.Add(snake2_tail);
+
+
+            int snake3_tail = random.Next(0, (num_rows * num_cols) - num_cols);
+            while (snake3_tail > snake3_head)
+            {
+                snake3_tail = random.Next(0, (num_rows * num_cols) - num_cols);
+            }
+            snake_tails.Add(snake3_tail);
+
+
+
+
+
+
+
+            //int ladder_1_position = random.Next(0, (num_rows * num_cols) + 1);
+            //int ladder2_position = random.Next(0, (num_rows * num_cols) + 1);
+            //int ladder3_position = random.Next(0, (num_rows * num_cols) + 1);
+
+
 
         }
 
@@ -63,12 +141,12 @@ namespace SnakesAndLadders
 
             Graphics targetGraphics = e.Graphics;
 
-            int square_num = 101;
+            int square_num = (num_cols * num_rows) + 1;
 
             // draw in alternate black and white panel squares
             for (int row_counter = 0; row_counter < num_cols; row_counter++)
             {
-                square_num -= 10;
+                square_num -= num_cols;
 
                 for (int col_counter = 0; col_counter < num_rows; col_counter++)
                 {
@@ -106,7 +184,8 @@ namespace SnakesAndLadders
                         }
                     }
                 }
-            }            
+            }           
+            
         }        
 
         private void player1_roll_button_Click(object sender, EventArgs e)
@@ -172,38 +251,38 @@ namespace SnakesAndLadders
         }
 
         // calculate and return the row number of the game piece using its position number
-        private int get_game_piece_row(int position_num)
+        private int get_row(int position_num)
         {
             int game_piece_row;
 
-            if (position_num % 10 == 0)
+            if (position_num % num_rows == 0)
             {
-                game_piece_row = 9 - ((position_num / 10) - 1);
+                game_piece_row = 9 - ((position_num / num_rows) - 1);
             }
             else
             {
-                game_piece_row = 9 - (position_num / 10);
+                game_piece_row = 9 - (position_num / num_rows);
             }
             
             return game_piece_row;
         }
 
         // calculate and return the column number of the game piece using its row number and position number
-        private int get_game_piece_col(int game_piece_row, int position_num)
+        private int get_col(int game_piece_row, int position_num)
         {
             int col_zero_num;
             int game_piece_col;
             
             if (game_piece_row % 2 == 1)
             {
-                col_zero_num = (10 - game_piece_row) * 10;
+                col_zero_num = (num_rows - game_piece_row) * num_rows;
                 game_piece_col = col_zero_num - position_num;
                 return game_piece_col;
 
             }
             else
             {
-                col_zero_num = ((10 - (game_piece_row + 1)) * 10) + 1;
+                col_zero_num = ((num_rows - (game_piece_row + 1)) * num_rows) + 1;
                 game_piece_col = position_num - col_zero_num;
                 return game_piece_col;
             }
@@ -218,8 +297,8 @@ namespace SnakesAndLadders
                 player1_position_num = new_player1_position_num;
 
                 // get the game piece's row number and column number
-                player1_game_piece_row = get_game_piece_row(player1_position_num);
-                player1_game_piece_col = get_game_piece_col(player1_game_piece_row, player1_position_num);
+                player1_game_piece_row = get_row(player1_position_num);
+                player1_game_piece_col = get_col(player1_game_piece_row, player1_position_num);
 
             }
             else if (player_num == 2)
@@ -229,8 +308,8 @@ namespace SnakesAndLadders
                 player2_position_num = new_player2_position_num;
 
                 // get the game piece's row number and column number
-                player2_game_piece_row = get_game_piece_row(player2_position_num);
-                player2_game_piece_col = get_game_piece_col(player2_game_piece_row, player2_position_num);
+                player2_game_piece_row = get_row(player2_position_num);
+                player2_game_piece_col = get_col(player2_game_piece_row, player2_position_num);
                 
             }
 
@@ -241,6 +320,8 @@ namespace SnakesAndLadders
 
         }
 
+        
+
         private void game_pieces_panel_Paint(object sender, PaintEventArgs e)
         {
             Graphics targetGraphics = e.Graphics;
@@ -249,6 +330,33 @@ namespace SnakesAndLadders
             targetGraphics.FillEllipse(sb_blue, player1_game_piece_col * pixel_width, (player1_game_piece_row*pixel_height) + (pixel_height/2), pixel_width/3, pixel_height/3);
             targetGraphics.FillEllipse(sb_red, (player2_game_piece_col * pixel_width) + (pixel_width/2), (player2_game_piece_row * pixel_height) + (pixel_height/2), pixel_width/3, pixel_height/3);
 
+            int snake_head_position_num;
+            int snake_head_row;
+            int snake_head_col;
+
+            int snake_tail_position_num;
+            int snake_tail_row;
+            int snake_tail_col;
+
+            for (int count = 0; count < 3; count++)
+            {
+                snake_head_position_num = snake_heads[count];
+                snake_head_row = get_row(snake_head_position_num);
+                snake_head_col = get_col(snake_head_row, snake_head_position_num);
+                Point snake_head_point = new Point((snake_head_col * pixel_width) + (pixel_width / 2), (snake_head_row * pixel_height) + (pixel_height / 2));
+
+                snake_tail_position_num = snake_tails[count];
+                snake_tail_row = get_row(snake_tail_position_num);
+                snake_tail_col = get_col(snake_tail_row, snake_tail_position_num);
+                Point snake_tail_point = new Point((snake_tail_col * pixel_width) + (pixel_width / 2), (snake_tail_row * pixel_height) + (pixel_height / 2));
+
+                targetGraphics.DrawLine(sb_green, snake_head_point, snake_tail_point);
+
+
+            }
+
         }
+
+
     }
 }

@@ -118,7 +118,7 @@ namespace SnakesAndLadders
             this.player1_num_label.Location = new System.Drawing.Point(756, 91);
             this.player1_num_label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.player1_num_label.Name = "player1_num_label";
-            this.player1_num_label.Size = new System.Drawing.Size(59, 59);
+            this.player1_num_label.Size = new System.Drawing.Size(39, 39);
             this.player1_num_label.TabIndex = 5;
             this.player1_num_label.Text = "  ";
             // 
@@ -132,7 +132,7 @@ namespace SnakesAndLadders
             this.player2_num_label.Location = new System.Drawing.Point(756, 360);
             this.player2_num_label.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.player2_num_label.Name = "player2_num_label";
-            this.player2_num_label.Size = new System.Drawing.Size(59, 59);
+            this.player2_num_label.Size = new System.Drawing.Size(39, 39);
             this.player2_num_label.TabIndex = 6;
             this.player2_num_label.Text = "  ";
             // 
@@ -146,7 +146,7 @@ namespace SnakesAndLadders
             this.move_description_label.Size = new System.Drawing.Size(0, 46);
             this.move_description_label.TabIndex = 7;
             // 
-            // Form
+            // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -162,7 +162,7 @@ namespace SnakesAndLadders
             this.Controls.Add(this.player1_label);
             this.Controls.Add(this.game_board_panel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Name = "Form";
+            this.Name = "GameForm";
             this.Text = "Snakes and Ladders";
             this.game_board_panel.ResumeLayout(false);
             this.ResumeLayout(false);
