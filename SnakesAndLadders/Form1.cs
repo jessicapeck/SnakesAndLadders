@@ -237,12 +237,27 @@ namespace SnakesAndLadders
             // refresh the form
             this.Refresh();
 
+            int position_num;
+
             // move player's game piece one square at a time
             for (int i = 0; i < num; i++)
             {
-                update_game_piece_positions(player_num, 1);
+                position_num = update_game_piece_positions(player_num, 1);
                 System.Threading.Thread.Sleep(500);
+
+                if (i == num - 1)
+                {
+                    while (snake_heads.Contains(position_num))
+                    {
+                        int index = snake_heads.IndexOf(position_num);
+                        int move_back = snake_tails[index] - position_num;
+                        position_num = update_game_piece_positions(player_num, move_back);
+
+                        move_description_label.Text = ($"Player {player_num} has moved from {snake_heads[index]} to {snake_tails[index]}");
+                    }
+                }
             }
+
 
             // swap enabled states of the dice roll buttons
             player1_roll_button.Enabled = !(player1_roll_button.Enabled);
@@ -288,8 +303,9 @@ namespace SnakesAndLadders
             }
         }
 
-        private void update_game_piece_positions(int player_num, int dice_roll_num)
+        private int update_game_piece_positions(int player_num, int dice_roll_num)
         {
+            
             if (player_num == 1)
             {
                 // update position number of game piece
@@ -307,17 +323,25 @@ namespace SnakesAndLadders
                 int new_player2_position_num = player2_position_num + dice_roll_num;
                 player2_position_num = new_player2_position_num;
 
+
                 // get the game piece's row number and column number
                 player2_game_piece_row = get_row(player2_position_num);
                 player2_game_piece_col = get_col(player2_game_piece_row, player2_position_num);
                 
             }
 
-            // TODO check if the player has landed on a snake or ladder and change position accordingly
 
             // refresh the game piece panel
             game_pieces_panel.Refresh();
 
+            if (player_num == 1)
+            {
+                return player1_position_num;
+            }
+            else
+            {
+                return player2_position_num;
+            }
         }
 
         
