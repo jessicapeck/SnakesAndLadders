@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -79,10 +80,10 @@ namespace SnakesAndLadders
 
             for (var i = 0; i < 3; i++)
             {
-                int snake_head = random.Next(num_rows * 2, (num_rows * num_cols) + 1);
+                int snake_head = random.Next(num_rows * 2, (num_rows * num_cols));
                 while (snake_heads.Contains(snake_head) || snake_tails.Contains(snake_head) || ladder_tops.Contains(snake_head) || ladder_bottoms.Contains(snake_head))
                 {
-                    snake_head = random.Next(num_rows * 2, (num_rows * num_cols) + 1);
+                    snake_head = random.Next(num_rows * 2, (num_rows * num_cols));
                 }
                 snake_heads.Add(snake_head);
 
@@ -93,10 +94,10 @@ namespace SnakesAndLadders
                 }
                 snake_tails.Add(snake_tail);
 
-                int ladder_top = random.Next(num_rows * 2, (num_rows * num_cols) + 1);
+                int ladder_top = random.Next(num_rows * 2, (num_rows * num_cols));
                 while (snake_heads.Contains(ladder_top) || snake_tails.Contains(ladder_top) || ladder_tops.Contains(ladder_top) || ladder_bottoms.Contains(ladder_top))
                 {
-                    ladder_top = random.Next(num_rows * 2, (num_rows * num_cols) + 1);
+                    ladder_top = random.Next(num_rows * 2, (num_rows * num_cols));
                 }
                 ladder_tops.Add(ladder_top);
 
@@ -391,6 +392,11 @@ namespace SnakesAndLadders
 
         }
 
-
+        private void GameForm_Load(object sender, EventArgs e)
+        {
+            // to prevent panel flickering
+            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, game_board_panel, new object[] { true });
+            typeof(Panel).InvokeMember("DoubleBuffered", BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic, null, game_pieces_panel, new object[] { true });
+        }
     }
 }

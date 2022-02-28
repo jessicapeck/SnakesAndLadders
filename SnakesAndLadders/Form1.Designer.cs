@@ -164,6 +164,7 @@ namespace SnakesAndLadders
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "GameForm";
             this.Text = "Snakes and Ladders";
+            this.Load += new System.EventHandler(this.GameForm_Load);
             this.game_board_panel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
