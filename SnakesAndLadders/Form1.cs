@@ -34,8 +34,8 @@ namespace SnakesAndLadders
         List<int> snake_heads = new List<int>() { };
         List<int> snake_tails = new List<int>() { };
 
-
-
+        List<int> ladder_tops = new List<int>() { };
+        List<int> ladder_bottoms = new List<int>() { };
 
         // declare different coloured brushes
         private SolidBrush sb_black = new SolidBrush(Color.Black);
@@ -43,7 +43,8 @@ namespace SnakesAndLadders
         private SolidBrush sb_blue = new SolidBrush(Color.Blue);
         private SolidBrush sb_red = new SolidBrush(Color.Red);
 
-        private Pen sb_green = new Pen(Color.Green, 10);
+        private Pen pen_green = new Pen(Color.Green, 10);
+        private Pen pen_brown = new Pen(Color.SaddleBrown, 10);
         
 
         public GameForm()
@@ -76,60 +77,36 @@ namespace SnakesAndLadders
         {
             Random random = new Random();
 
-            int snake1_head = random.Next(num_rows*2, (num_rows * num_cols) + 1);
-            snake_heads.Add(snake1_head);
-
-            int snake2_head = random.Next(num_rows*2, (num_rows * num_cols) + 1);
-            while (snake_heads.Contains(snake2_head))               
+            for (var i = 0; i < 3; i++)
             {
-                snake2_head = random.Next(num_rows * 2, (num_rows * num_cols) + 1);
+                int snake_head = random.Next(num_rows * 2, (num_rows * num_cols) + 1);
+                while (snake_heads.Contains(snake_head) || snake_tails.Contains(snake_head) || ladder_tops.Contains(snake_head) || ladder_bottoms.Contains(snake_head))
+                {
+                    snake_head = random.Next(num_rows * 2, (num_rows * num_cols) + 1);
+                }
+                snake_heads.Add(snake_head);
 
+                int snake_tail = random.Next(2, (num_rows * num_cols) - num_cols);
+                while ( snake_tail > snake_head ||snake_heads.Contains(snake_tail) || snake_tails.Contains(snake_tail) || ladder_tops.Contains(snake_tail) || ladder_bottoms.Contains(snake_tail) || get_row(snake_head) == get_row(snake_tail) || get_col(get_row(snake_head),snake_head) == get_col(get_row(snake_tail),snake_tail))
+                {
+                    snake_tail = random.Next(2, (num_rows * num_cols) - num_cols);
+                }
+                snake_tails.Add(snake_tail);
+
+                int ladder_top = random.Next(num_rows * 2, (num_rows * num_cols) + 1);
+                while (snake_heads.Contains(ladder_top) || snake_tails.Contains(ladder_top) || ladder_tops.Contains(ladder_top) || ladder_bottoms.Contains(ladder_top))
+                {
+                    ladder_top = random.Next(num_rows * 2, (num_rows * num_cols) + 1);
+                }
+                ladder_tops.Add(ladder_top);
+
+                int ladder_bottom = random.Next(2, (num_rows * num_cols) - num_cols);
+                while (ladder_bottom > ladder_top || snake_heads.Contains(ladder_bottom) || snake_tails.Contains(ladder_bottom) || ladder_tops.Contains(ladder_bottom) || ladder_bottoms.Contains(ladder_bottom) || get_row(ladder_top) == get_row(ladder_bottom) || get_col(get_row(ladder_top), ladder_top) == get_col(get_row(ladder_bottom), ladder_bottom))
+                {
+                    ladder_bottom = random.Next(2, (num_rows * num_cols) - num_cols);
+                }
+                ladder_bottoms.Add(ladder_bottom);
             }
-            snake_heads.Add(snake2_head);
-
-            int snake3_head = random.Next(num_rows*2, (num_rows * num_cols) + 1);
-            while (snake_heads.Contains(snake3_head))
-            {
-                snake3_head = random.Next(num_rows * 2, (num_rows * num_cols) + 1);
-
-            }
-            snake_heads.Add(snake3_head);
-
-
-            int snake1_tail = random.Next(0, (num_rows * num_cols) - num_cols);
-            while (snake1_tail > snake1_head)
-            {
-                snake1_tail = random.Next(0, (num_rows * num_cols) - num_cols);
-            }
-            snake_tails.Add(snake1_tail);
-
-
-            int snake2_tail = random.Next(0, (num_rows * num_cols) - num_cols);
-            while (snake2_tail > snake2_head)
-            {
-                snake2_tail = random.Next(0, (num_rows * num_cols) - num_cols);
-            }
-            snake_tails.Add(snake2_tail);
-
-
-            int snake3_tail = random.Next(0, (num_rows * num_cols) - num_cols);
-            while (snake3_tail > snake3_head)
-            {
-                snake3_tail = random.Next(0, (num_rows * num_cols) - num_cols);
-            }
-            snake_tails.Add(snake3_tail);
-
-
-
-
-
-
-
-            //int ladder_1_position = random.Next(0, (num_rows * num_cols) + 1);
-            //int ladder2_position = random.Next(0, (num_rows * num_cols) + 1);
-            //int ladder3_position = random.Next(0, (num_rows * num_cols) + 1);
-
-
 
         }
 
@@ -184,23 +161,35 @@ namespace SnakesAndLadders
                         }
                     }
                 }
-            }           
-            
+            }
+
+            for (int count = 0; count < 3; count++)
+            {
+                Point snake_head_point = get_point(count, snake_heads);
+                Point snake_tail_point = get_point(count, snake_tails);
+                targetGraphics.DrawLine(pen_green, snake_head_point, snake_tail_point);
+
+                Point ladder_top_point = get_point(count, ladder_tops);
+                Point ladder_bottom_point = get_point(count, ladder_bottoms);
+                targetGraphics.DrawLine(pen_brown, ladder_top_point, ladder_bottom_point);
+            }
+
         }        
 
         private void player1_roll_button_Click(object sender, EventArgs e)
         {
             // call method, pass the player number (1)
-            generate_random_number(1);
+            roll_dice_then_move(1);
         }
 
         private void player2_roll_button_Click(object sender, EventArgs e)
         {
             // call the method, pass the player number (2)
-            generate_random_number(2);
+            roll_dice_then_move(2);
+            
         }
 
-        private void generate_random_number(int player_num)
+        private void roll_dice_then_move(int player_num)
         {
             // declare integer variables
             int initial_position;
@@ -210,29 +199,33 @@ namespace SnakesAndLadders
             Random random = new Random();
             int num = random.Next(1, 7);
 
-            // work out the end position, show message in move_description_label
             if (player_num == 1)
             {
                 player1_num_label.Text = num.ToString();
-                initial_position = player1_position_num; 
-                end_position = initial_position + num;
+                initial_position = player1_position_num;
 
                 move_description_label.ForeColor = Color.Blue;
-                move_description_label.Text = ($"Player {player_num} has moved from {initial_position} to {end_position}.");
-
 
             }
-            else if (player_num == 2)
+            else
             {
                 player2_num_label.Text = num.ToString();
                 initial_position = player2_position_num;
-                end_position = initial_position + num;
 
                 move_description_label.ForeColor = Color.Red;
-                move_description_label.Text = ($"Player {player_num} has moved from {initial_position} to {end_position}.");
-
 
             }
+
+            end_position = initial_position + num;
+            if (end_position > 100)
+            {
+                end_position = 100;
+            }
+
+            
+
+            // show message in move_description_label
+            move_description_label.Text = ($"Player {player_num} has moved from {initial_position} to {end_position}.");
 
             // refresh the form
             this.Refresh();
@@ -242,21 +235,46 @@ namespace SnakesAndLadders
             // move player's game piece one square at a time
             for (int i = 0; i < num; i++)
             {
+
                 position_num = update_game_piece_positions(player_num, 1);
                 System.Threading.Thread.Sleep(500);
 
+                if (position_num == 100)
+                {
+                    end_sequence(player_num);
+                    return;
+                }
+
+                
+
                 if (i == num - 1)
                 {
-                    while (snake_heads.Contains(position_num))
+                    while (snake_heads.Contains(position_num) || ladder_bottoms.Contains(position_num))
                     {
-                        int index = snake_heads.IndexOf(position_num);
-                        int move_back = snake_tails[index] - position_num;
-                        position_num = update_game_piece_positions(player_num, move_back);
+                        if (snake_heads.Contains(position_num))
+                        {
+                            int index = snake_heads.IndexOf(position_num);
+                            int move_back = snake_tails[index] - position_num;
+                            position_num = update_game_piece_positions(player_num, move_back);
 
-                        move_description_label.Text = ($"Player {player_num} has moved from {snake_heads[index]} to {snake_tails[index]}");
+                            move_description_label.Text = ($"Player {player_num} has moved from {snake_heads[index]} to {snake_tails[index]}");
+                        }
+
+                        if (ladder_bottoms.Contains(position_num))
+                        {
+                            int index = ladder_bottoms.IndexOf(position_num);
+                            int move_forward = ladder_tops[index] - position_num;
+                            position_num = update_game_piece_positions(player_num, move_forward);
+
+                            move_description_label.Text = ($"Player {player_num} has moved from {ladder_bottoms[index]} to {ladder_tops[index]}");
+                        }
+
                     }
                 }
             }
+
+                     
+
 
 
             // swap enabled states of the dice roll buttons
@@ -265,6 +283,13 @@ namespace SnakesAndLadders
 
         }
 
+        private void end_sequence(int player_num)
+        {
+            move_description_label.Text = ($"Player {player_num} WINS!");
+            player1_roll_button.Enabled = false;
+            player2_roll_button.Enabled = false;            
+        }
+        
         // calculate and return the row number of the game piece using its position number
         private int get_row(int position_num)
         {
@@ -344,7 +369,15 @@ namespace SnakesAndLadders
             }
         }
 
-        
+        private Point get_point(int count, List<int> items)
+        {
+            int position_num = items[count];
+            int position_row = get_row(position_num);
+            int position_col = get_col(position_row, position_num);
+            Point point = new Point((position_col * pixel_width) + (pixel_width / 2), (position_row * pixel_height) + (pixel_height / 2));
+
+            return point;
+        }
 
         private void game_pieces_panel_Paint(object sender, PaintEventArgs e)
         {
@@ -354,30 +387,7 @@ namespace SnakesAndLadders
             targetGraphics.FillEllipse(sb_blue, player1_game_piece_col * pixel_width, (player1_game_piece_row*pixel_height) + (pixel_height/2), pixel_width/3, pixel_height/3);
             targetGraphics.FillEllipse(sb_red, (player2_game_piece_col * pixel_width) + (pixel_width/2), (player2_game_piece_row * pixel_height) + (pixel_height/2), pixel_width/3, pixel_height/3);
 
-            int snake_head_position_num;
-            int snake_head_row;
-            int snake_head_col;
-
-            int snake_tail_position_num;
-            int snake_tail_row;
-            int snake_tail_col;
-
-            for (int count = 0; count < 3; count++)
-            {
-                snake_head_position_num = snake_heads[count];
-                snake_head_row = get_row(snake_head_position_num);
-                snake_head_col = get_col(snake_head_row, snake_head_position_num);
-                Point snake_head_point = new Point((snake_head_col * pixel_width) + (pixel_width / 2), (snake_head_row * pixel_height) + (pixel_height / 2));
-
-                snake_tail_position_num = snake_tails[count];
-                snake_tail_row = get_row(snake_tail_position_num);
-                snake_tail_col = get_col(snake_tail_row, snake_tail_position_num);
-                Point snake_tail_point = new Point((snake_tail_col * pixel_width) + (pixel_width / 2), (snake_tail_row * pixel_height) + (pixel_height / 2));
-
-                targetGraphics.DrawLine(sb_green, snake_head_point, snake_tail_point);
-
-
-            }
+                       
 
         }
 
