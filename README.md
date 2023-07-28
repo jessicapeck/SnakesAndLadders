@@ -9,8 +9,8 @@ Welcome to the 'Snakes and Ladders' game! This project was developed for a schoo
 
 ## Technologies
 - C# version 8.0
-- Microsoft Visual Studio version 16.11.13
-- .NET Framework version 4.8
+- Microsoft Visual Studio Community 2019 version 16.11.28
+- Microsoft .NET Framework version 4.8.09032
 
 ## How to play
 When the program is first run, the form will appear like the first image. **Snakes** on the board are represented by green lines and **ladders** are represented by brown lines. There is a blue counter for **Player 1** and a red counter for **Player 2**. Both counters are initially on sqaure 1 of the grid.
