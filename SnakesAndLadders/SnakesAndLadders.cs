@@ -15,7 +15,7 @@ namespace SnakesAndLadders
     {
 
         // declare the number of rows and columns in the panel
-        // if changing num_rows or num_cols, must make sure that they are even
+        // NOTE TO DEVELOPER : if changing num_rows or num_cols, must make sure that they are even
         int num_rows = 10;
         int num_cols = 10;
 
