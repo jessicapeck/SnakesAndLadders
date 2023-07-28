@@ -146,7 +146,7 @@ namespace SnakesAndLadders
             this.move_description_label.Size = new System.Drawing.Size(0, 46);
             this.move_description_label.TabIndex = 7;
             // 
-            // GameForm
+            // SnakesAndLadders
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -162,7 +162,7 @@ namespace SnakesAndLadders
             this.Controls.Add(this.player1_label);
             this.Controls.Add(this.game_board_panel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Name = "GameForm";
+            this.Name = "SnakesAndLadders";
             this.Text = "Snakes and Ladders";
             this.Load += new System.EventHandler(this.GameForm_Load);
             this.game_board_panel.ResumeLayout(false);
