@@ -48,7 +48,7 @@ namespace SnakesAndLadders
         private Pen pen_brown = new Pen(Color.SaddleBrown, 10);
         
 
-        public GameForm()
+        public SnakesAndLadders()
         {
             InitializeComponent();
 

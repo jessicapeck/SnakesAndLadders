@@ -1,7 +1,7 @@
 ﻿
 namespace SnakesAndLadders
 {
-    partial class GameForm
+    partial class SnakesAndLadders
     {
         /// <summary>
         /// Required designer variable.
