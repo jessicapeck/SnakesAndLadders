@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace SnakesAndLadders
 {
-    public partial class GameForm : Form
+    public partial class SnakesAndLadders : Form
     {
 
         // declare the number of rows and columns in the panel
