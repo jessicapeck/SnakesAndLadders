@@ -1,4 +1,9 @@
 # SnakesAndLadders
+- [Introduction](#introduction)
+- [Technologies](#technologies)
+- [How to play](#how-to-play)
+- [License](#license)
+ 
 ## Introduction
 Welcome to the 'Snakes and Ladders' game! This project was developed for a school assignment in which we were learning how to build a very basic UI for a coded game.
 
