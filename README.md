@@ -5,7 +5,7 @@
 - [License](#license)
  
 ## Introduction
-Welcome to the 'Snakes and Ladders' game! This project was developed for a school assignment in which we were learning how to build a very basic UI for a coded game.
+Welcome to the 'Snakes and Ladders' game! This project was developed for a school assignment in which we were focussing on building a very basic UI for a game.
 
 ## How to play
 When the program is first run, the form will appear like the first image. **Snakes** on the board are represented by green lines and **ladders** are represented by brown lines. There is a blue counter for **Player 1** and a red counter for **Player 2**. Both counters are initially on sqaure 1 of the grid.
