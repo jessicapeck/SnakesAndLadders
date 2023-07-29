@@ -26,7 +26,7 @@ When the program is first run, the form will appear like the first image. **Snak
 - C# version 8.0
 - Microsoft Visual Studio Community 2019 version 16.11.28
 - Microsoft .NET Framework version 4.8.09032
-- 
+  
 ## License
 Open sourced under the [MIT license](LICENSE.md).
 
