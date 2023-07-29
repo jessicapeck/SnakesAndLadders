@@ -1,16 +1,11 @@
 # SnakesAndLadders
 - [Introduction](#introduction)
-- [Technologies](#technologies)
 - [How to play](#how-to-play)
+- [Technologies](#technologies)
 - [License](#license)
  
 ## Introduction
 Welcome to the 'Snakes and Ladders' game! This project was developed for a school assignment in which we were learning how to build a very basic UI for a coded game.
-
-## Technologies
-- C# version 8.0
-- Microsoft Visual Studio Community 2019 version 16.11.28
-- Microsoft .NET Framework version 4.8.09032
 
 ## How to play
 When the program is first run, the form will appear like the first image. **Snakes** on the board are represented by green lines and **ladders** are represented by brown lines. There is a blue counter for **Player 1** and a red counter for **Player 2**. Both counters are initially on sqaure 1 of the grid.
@@ -27,6 +22,11 @@ When the program is first run, the form will appear like the first image. **Snak
 |--------------|-----------------------|-----------------------|
 |<img src="https://github.com/jessicapeck/SnakesAndLadders/blob/main/images/snakes-and-ladders-1.png" alt="Snakes and Ladders image 1" width=100%>|<img src="https://github.com/jessicapeck/SnakesAndLadders/blob/main/images/snakes-and-ladders-2.png" alt="Snakes and Ladders image 2" width=100%>|<img src="https://github.com/jessicapeck/SnakesAndLadders/blob/main/images/snakes-and-ladders-3.png" alt="Snakes and Ladders image 3" width=100%>|
 
+## Technologies
+- C# version 8.0
+- Microsoft Visual Studio Community 2019 version 16.11.28
+- Microsoft .NET Framework version 4.8.09032
+- 
 ## License
 Open sourced under the [MIT license](LICENSE.md).
 
